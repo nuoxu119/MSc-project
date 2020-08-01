@@ -35,10 +35,6 @@ y10000 = data10000[,3]
 
 ## Result: I have tested 'lag.max=2,10,100,500,1000' and the best selection based on SC(n) for each one were 2,8,5,4,1.
 
-# Q1: Which is the best choice to set lag.max? 
-# Q2: I used each of them as 'order' number in 'grangertest()', all results showed that p-value were quite smaller than 0.05.
-#So under this situation, can I ignore the influence of model order? 
-# Q3: Is that correct by doing data transformation after dividing intervals? or they are kind of 'repeated' steps?
 newx10000 = x10000-mean(x10000)
 newx10000 = log(data10000[,2])
 newy10000 = y10000-mean(y10000)
@@ -50,20 +46,16 @@ IC=VARselect(y=newdata10000, type="none",lag.max=100)
 ### Step 3: Bivariate Granger causality test
 
 ## Null Hypothesis: Species 2 in every specific iteration interval does NOT Granger cause Species 1.
+
 ## Result: The species 2 Granger cause the species 1. To put it more generally, species 2 are predictive of future species 1. 
 # I also play grangertest() for other 4 data sets,and get the same result. 
-
-#Q4: How to detect the direction of effect?
 
 grangertest(newx10000,newy10000,order=8) # p-value is 1.601e-11, Reject.
 grangertest(x10000,y10000,order=8) # p-value is 2.058e-11, Reject.
 
 
 ### Step 4: plot
-
-#Q5: Is this plot correct? If it is, why I couldn't read the prey-predator relationship directly from the plot? 
-#If there is something wrong with my plot, could you help to figure out this part? 
-# I tried different combination in ylim=, but it didn't help. 
+# You can see the plot "GCplot_data10000" in the folder. 
 
 plot(data10000$Iteration,x10000,ylim=c(min(x10000),max(y10000)),ylab="Numbers alive",
      main = 'General Plot for 8001-10000 iterations')
@@ -71,3 +63,16 @@ lines(data10000$Iteration,x10000,col="lightskyblue3",type="o",lwd=0.5,pch=19)
 lines(data10000$Iteration,y10000,col="orange1",type="o",lwd=0.5,pch=19)
 
 
+### Question Summary
+
+# Q1: Is that correct by doing data transformation after dividing intervals? or they are kind of 'repeated' steps?
+
+# Q2: Which is the best choice to set lag.max? 
+
+# Q3: I used each of them as 'order' number in 'grangertest()', all results showed that p-value were quite smaller than 0.05. 
+# So under this situation, can I ignore the influence of model order? 
+
+# Q4: How to detect the direction of effect?
+
+# Q5: Is this plot correct? If it is right, why I couldn't read the prey-predator relationship directly from the plot? 
+#If there is something wrong with my plot, could you help to figure out this part? I tried different combination in ylim=, but it didn't help. 
