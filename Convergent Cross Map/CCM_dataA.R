@@ -17,12 +17,10 @@ names(pred_prey) = c("Time","prey","pred")
 #2. use the time lages of X to predic the lagged on time set value of Yby setting the augment tp=-1.
 #3. determine the optimal E.
 
-prey_xmap_pred <- ccm(pred_prey, E =3, lib_col = "prey",
+prey_xmap_pred <- ccm(pred_prey, E =8, lib_col = "prey",
                       target_col = "pred", lib_sizes =seq(10,100,by=10), num_samples=100,replace=FALSE)
-                      
-                      
 #To test whether Prey cause Pred
-pred_xmap_prey <- ccm(pred_prey, E =3, lib_col = "pred",
+pred_xmap_prey <- ccm(pred_prey, E =7, lib_col = "pred",
                       target_col = "pred", lib_sizes = seq(10,100,by=10), num_samples=100,replace=FALSE)
 
 prey_xmap_pred_means <- data.frame(ccm_means(prey_xmap_pred),sd.rho = with(prey_xmap_pred,
@@ -34,6 +32,7 @@ plot(prey_xmap_pred_means$lib_size, pmax(0, prey_xmap_pred_means$rho), type = "l
 lines(pred_xmap_prey_means$lib_size, pmax(0, pred_xmap_prey_means$rho), col = "blue")
 legend("bottomright",legend = c("prey xmap pred", "pred xmap prey"), col = c("red", "blue"),lwd = 1, inset = 0.02, bty="n",cex=0.8)
 
+#mtext("a)",side=2,line=2,at=1.1,las=2,cex=1.2)
 
 lines(prey_xmap_pred_means$lib_size, prey_xmap_pred_means$rho + 2*prey_xmap_pred_means$sd.rho, col = "red",
       lty = 2, lwd = 2)
@@ -43,4 +42,7 @@ lines(pred_xmap_prey_means$lib_size, pred_xmap_prey_means$rho + 2*pred_xmap_prey
       lty = 2, lwd = 2)
 lines(pred_xmap_prey_means$lib_size, pred_xmap_prey_means$rho - 2*pred_xmap_prey_means$sd.rho, col = "blue",
       lty = 2, lwd = 2)
-                                  
+
+
+#Seeing from the plot:
+#It suggests that the Pred(S2 also Y) is driven by other variables more strongly.
